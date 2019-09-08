@@ -1,0 +1,35 @@
+---
+- name: Install selfoss package
+  package:
+    name: selfoss
+    state: installed
+
+- name: Ensure php-pdo_sqlite is installed
+  package:
+    name: php-pdo_sqlite-7.1.32
+    state: installed
+
+- name: Ensure php-fpm is enabled and started
+  service:
+    name: php71_fpm
+    enabled: yes
+    state: started
+
+- name: Ensure allow_url_fopen is enabled in php.ini
+  ini_file:
+    path: /etc/php-7.1.ini
+    section: PHP
+    option: allow_url_fopen
+    value: 'On'
+
+- name: Ensure pdo-sqlite is enabled in php.ini
+  file:
+    src: /etc/php-7.1.sample/pdo_sqlite.ini
+    dest: /etc/php-7.1/pdo_sqlite.ini
+    state: link
+
+- name: Ensure gd is enabled in php.ini
+  file:
+    src: /etc/php-7.1.sample/gd.ini
+    dest: /etc/php-7.1/gd.ini
+    state: link

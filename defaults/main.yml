@@ -1,0 +1,6 @@
+---
+selfoss_default_install_dir: /var/www/selfoss
+selfoss_install_dir: "{{ selfoss_default_install_dir }}"
+__selfoss_url: "{{ selfoss_url | mandatory }}"
+__selfoss_username: "{{ selfoss_username | mandatory }}"
+__selfoss_password: "{{ selfoss_password | mandatory }}"

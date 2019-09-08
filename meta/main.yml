@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  role_name: selfoss
+  author: Tristan Le Guern
+  description: Configure selfoss RSS reader
+  company: Gwern
+  license: ISC
+  min_ansible_version: 2.6
+  platforms:
+    - name: OpenBSD
+      versions:
+        - 6.5
+  galaxy_tags:
+    - selfoss
+dependencies: []
