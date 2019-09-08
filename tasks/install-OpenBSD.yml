@@ -1,12 +1,7 @@
 ---
-- name: Install selfoss package
+- name: Install selfoss package and dependencies
   package:
-    name: selfoss
-    state: installed
-
-- name: Ensure php-pdo_sqlite is installed
-  package:
-    name: php-pdo_sqlite-7.1.32
+    name: [ 'selfoss', 'php-pdo_sqlite-7.1.32' ]
     state: installed
 
 - name: Ensure php-fpm is enabled and started
