@@ -3,6 +3,8 @@
 Install and configure the `selfoss` RSS reader with support for multi-users setup.
 A new salt is generated for each installation and the password hash gathered from the `/password` service is written in config.ini.
 
+The only supported operating system is OpenBSD but the code should be easy to adapt.
+
 # Requirements
 
 None
