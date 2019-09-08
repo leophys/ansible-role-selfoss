@@ -18,8 +18,6 @@
     check_mode: yes
     changed_when: false
     register: selfoss_target_dir_state
-  - debug:
-      msg: "{{ selfoss_target_dir_state }}"
   - name: Install selfoss to target directory
     copy:
       src: "{{ selfoss_default_install_dir }}/"
