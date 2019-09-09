@@ -13,11 +13,22 @@ None
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `selfoss_default_install_dir` | Default installation directory for selfoss | /var/www/selfoss |
+| `selfoss_default_install_dir` | Default installation directory for selfoss | `/var/www/selfoss` |
 | `selfoss_install_dir` | Alternative installation directory | `{{ selfoss_default_install_dir }}` |
 | `selfoss_url` | Alternative URL for the service | (Mandatory) |
 | `selfoss_username` | Account username | (Mandatory) |
 | `selfoss_password` | Account password | (Mandatory) |
+| `selfoss_php_path` | Path to the PHP binary | `{{ ___selfoss_php_path }}` |
+| `selfoss_www_user` | UNIX user for the web server | `{{ ___selfoss_www_user }}` |
+| `selfoss_www_group` | UNIX group for the web server | `{{ ___selfoss_www_group }}` |
+
+## OpenBSD
+
+| Variable | Default |
+|----------|---------|
+| `___selfoss_php_path` | `/usr/local/bin/php-7.1` |
+| `___selfoss_www_user` | `www` |
+| `___selfoss_www_group` | `daemon` |
 
 # Dependencies
 

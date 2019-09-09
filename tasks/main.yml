@@ -1,11 +1,12 @@
 ---
+- include_vars: "{{ ansible_os_family }}.yml"
 - include: "install-{{ ansible_os_family }}.yml"
 
 - name: Ensure directories have correct ownership
   file:
     path: "{{ selfoss_default_install_dir }}"
-    owner: www
-    group: daemon
+    owner: "{{ selfoss_www_user }}"
+    group: "{{ selfoss_www_group }}"
     recurse: yes
     mode: 0750
 
@@ -23,8 +24,8 @@
       src: "{{ selfoss_default_install_dir }}/"
       dest: "{{ selfoss_install_dir }}"
       remote_src: yes
-      owner: www
-      group: daemon
+      owner: "{{ selfoss_www_user }}"
+      group: "{{ selfoss_www_group }}"
     when: selfoss_target_dir_state.state == "absent"
   when: selfoss_default_install_dir != selfoss_install_dir
 
@@ -101,3 +102,11 @@
         option: password
         value: "{{ selfoss_password_online.stdout }}"
     when: selfoss_password_state.changed == false and selfoss_password_state.msg != 'line added'
+
+- name: Ensure feeds are updated with a cron job
+  cron:
+    name: "Update feeds for {{ selfoss_username }}"
+    hour: "5"
+    minute: "10"
+    job: "sleep $((RANDOM % 300)) && {{ selfoss_php_path }} {{ selfoss_install_dir }}/cliupdate.php"
+    user: "{{ selfoss_www_user }}"

@@ -1,0 +1,4 @@
+---
+___selfoss_php_path: /usr/local/bin/php-7.1
+___selfoss_www_user: www
+___selfoss_www_group: daemon
