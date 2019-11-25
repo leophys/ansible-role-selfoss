@@ -28,3 +28,9 @@
     src: /etc/php-7.1.sample/gd.ini
     dest: /etc/php-7.1/gd.ini
     state: link
+
+- name: Ensure ssl.certs is copied in the chroot
+  copy:
+    src: /etc/ssl/cert.pem
+    dest: /var/www/etc/ssl/cert.pem
+    remote_src: yes
