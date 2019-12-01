@@ -108,5 +108,5 @@
     name: "Update feeds for {{ selfoss_username }}"
     hour: "5"
     minute: "10"
-    job: "sleep $((RANDOM % 300)) && {{ selfoss_php_path }} {{ selfoss_install_dir }}/cliupdate.php"
+    job: "sleep $((RANDOM \\% 300)) && {{ selfoss_php_path }} {{ selfoss_install_dir }}/cliupdate.php"
     user: "{{ selfoss_www_user }}"
