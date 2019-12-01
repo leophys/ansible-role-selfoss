@@ -21,6 +21,7 @@ None
 | `selfoss_php_path` | Path to the PHP binary | `{{ ___selfoss_php_path }}` |
 | `selfoss_www_user` | UNIX user for the web server | `{{ ___selfoss_www_user }}` |
 | `selfoss_www_group` | UNIX group for the web server | `{{ ___selfoss_www_group }}` |
+| `selfoss_special_time` | cron special time | `daily` |
 
 ## OpenBSD
 
