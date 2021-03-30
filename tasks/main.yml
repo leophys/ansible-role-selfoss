@@ -80,27 +80,12 @@
     check_mode: yes
     changed_when: false
     register: selfoss_password_state
-  - block:
-    - name: Convert the password using selfoss /password service
-      uri:
-        url: "{{ selfoss_url }}/password"
-        method: POST
-        body_format: form-urlencoded
-        body:
-          password: "{{ __selfoss_password }}"
-        status_code: 200
-        return_content: yes
-      register: selfoss_password_online
-    - name: Extract the password from the HTML page
-      shell: echo {{ selfoss_password_online | quote }} | grep 'Generated Password' | grep -oE 'value="([a-z0-9]*)"' | sed -E 's/value="([a-z0-9]*)"/\1/'
-      changed_when: false
-      register: selfoss_password_online
-    - name: Write the hashed password in config.ini
-      ini_file:
-        path: "{{ selfoss_install_dir }}/config.ini"
-        section: globals
-        option: password
-        value: "{{ selfoss_password_online.stdout }}"
+  - name: Write the hashed password in config.ini
+    ini_file:
+      path: "{{ selfoss_install_dir }}/config.ini"
+      section: globals
+      option: password
+      value: "{{ selfoss_password_hash }}"
     when: selfoss_password_state.changed == false and selfoss_password_state.msg != 'line added'
 
 - name: Ensure feeds are updated with a cron job
