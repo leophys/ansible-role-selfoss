@@ -1,0 +1,11 @@
+---
+selfoss_create_user: False
+selfoss_www_user: www-data
+selfoss_www_group: www-data
+selfoss_port: "8080"
+selfoss_url: http://debiantest:8080
+selfoss_username: leo
+selfoss_password: password
+selfoss_include_nginx: True
+selfoss_password_salt: $2b$10$06dc9qpT/wPf/NxnMEngVO
+selfoss_password_hash: $2b$10$06dc9qpT/wPf/NxnMEngVO8nAgAq4TS4Erts4fSjT.S/SxECQ8deS

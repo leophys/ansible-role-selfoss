@@ -1,0 +1,8 @@
+---
+- hosts: debiantest
+  gather_facts: yes
+  vars_files:
+    - ./test/vars.yml
+
+  roles:
+    - ansible-selfoss

@@ -1,0 +1,29 @@
+server {
+    listen {{ selfoss_port }} default_server;
+    root {{ selfoss_install_dir }};
+    access_log /var/log/nginx/selfoss.access.log;
+    error_log /var/log/nginx/selfoss.error.log;
+
+    location ~* \ (gif|jpg|png) {
+        expires 30d;
+    }
+
+    location ~ ^/(favicons|thumbnails)/.*$ {
+        try_files $uri /data/$uri;
+    }
+
+    location ~* ^/(data\/logs|data\/sqlite|config\.ini|\.ht) {
+        deny all;
+    }
+
+    location / {
+        index index.php;
+        try_files $uri /public/$uri /index.php$is_args$args;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php{{ selfoss_php_version }}-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi.conf;
+    }
+}

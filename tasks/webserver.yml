@@ -1,0 +1,35 @@
+---
+- name: Install selfoss dependencies
+  apt:
+    name: nginx
+    state: present
+
+- name: Ensure the configuration file is present
+  template:
+    src: selfoss.conf.j2
+    dest: /etc/nginx/sites-available/selfoss.conf
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart nginx
+
+- name: Ensure nginx configuration is enabled
+  file:
+    src: /etc/nginx/sites-available/selfoss.conf
+    dest: /etc/nginx/sites-enabled/selfoss.conf
+    owner: root
+    group: root
+    state: link
+  notify: restart nginx
+
+- name: Ensure default nginx configuration is absent
+  file:
+    dest: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: restart nginx
+
+- name: Enable nginx service
+  systemd:
+    name: nginx.service
+    enabled: yes
+    state: started

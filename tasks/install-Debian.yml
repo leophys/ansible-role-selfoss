@@ -1,0 +1,58 @@
+---
+- name: Install selfoss dependencies
+  apt:
+    name:
+      - php-fpm
+      - php-sqlite3
+      - php-gd
+      - php-xml
+      - unzip
+    update_cache: yes
+    state: present
+
+- name: Add selfoss runner users
+  user:
+    name: "{{ selfoss_www_user }}"
+    group: www-data
+    state: present
+    system: True
+    shell: /usr/sbin/nologin
+    home: "{{ selfoss_install_dir }}"
+    create_home: True
+  when: selfoss_create_user
+
+- name: Download selfoss from web
+  unarchive:
+    src: "{{ ___selfoss_download_url }}"
+    dest: /tmp
+    remote_src: yes
+
+- name: Replace current selfoss, if any
+  copy:
+    src: /tmp/selfoss
+    dest: "{{ selfoss_default_install_dir | dirname }}"
+    remote_src: yes
+
+- name: Create configuration from default
+  copy:
+    src: "{{ selfoss_default_install_dir }}/defaults.ini"
+    dest: "{{ selfoss_default_install_dir }}/config.ini"
+    remote_src: yes
+
+- name: Ensure php-fpm is running
+  systemd:
+    name: "php{{ selfoss_php_version }}-fpm.service"
+    enabled: yes
+    state: started
+
+- name: Ensure allow_url_fopen is enabled in php.ini
+  ini_file:
+    path: /etc/php/{{ selfoss_php_version }}/fpm/php.ini
+    section: PHP
+    option: allow_url_fopen
+    value: 'On'
+
+- include: "webserver.yml"
+
+- name: Force all notified handlers to run at this point, not waiting for normal sync points
+  meta: flush_handlers

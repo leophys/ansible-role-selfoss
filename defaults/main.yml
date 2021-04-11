@@ -3,7 +3,7 @@ selfoss_default_install_dir: /var/www/selfoss
 selfoss_install_dir: "{{ selfoss_default_install_dir }}"
 __selfoss_url: "{{ selfoss_url | mandatory }}"
 __selfoss_username: "{{ selfoss_username | mandatory }}"
-__selfoss_password: "{{ selfoss_password | mandatory }}"
+__selfoss_password_hash: "{{ selfoss_password_hash | mandatory }}"
 selfoss_special_time: daily
 
 # System specific variables, to be defined in vars/{{ ansible_os_family }}.yml

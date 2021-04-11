@@ -29,7 +29,7 @@
     when: selfoss_target_dir_state.state == "absent"
   when: selfoss_default_install_dir != selfoss_install_dir
 
-- name: Ensure correct initialization of the salt
+- name: Ensure the correct salt is present
   block:
   - name: Check the value of salt in config.ini
     lineinfile:
@@ -39,18 +39,14 @@
     check_mode: yes
     changed_when: false
     register: selfoss_salt_state
-  - block:
-    - name: Create a good salt
-      shell: tr -cd '#_[:alnum:]' < /dev/urandom | fold -w 60 | head -1
-      register: selfoss_salt
-      changed_when: false
-    - name: Write the new salt in config.ini
-      ini_file:
-        path: "{{ selfoss_install_dir }}/config.ini"
-        section: globals
-        option: salt
-        value: "{{ selfoss_salt.stdout }}"
+  - name: Write the new salt in config.ini
+    ini_file:
+      path: "{{ selfoss_install_dir }}/config.ini"
+      section: globals
+      option: salt
+      value: "{{ selfoss_password_salt }}"
     when: selfoss_salt_state.changed == false and selfoss_salt_state.msg != 'line added'
+  when: selfoss_password_salt is defined
 
 - name: Ensure correct initialization of the username
   block:
@@ -69,6 +65,7 @@
       option: username
       value: "{{ __selfoss_username }}"
     when: selfoss_username_state.changed == false and selfoss_username_state.msg != 'line added'
+  when: selfoss_username is defined
 
 - name: Ensure correct initialization of the password
   block:
@@ -87,10 +84,11 @@
       option: password
       value: "{{ selfoss_password_hash }}"
     when: selfoss_password_state.changed == false and selfoss_password_state.msg != 'line added'
+  when: selfoss_password_hash is defined
 
 - name: Ensure feeds are updated with a cron job
   cron:
-    name: "Update feeds for {{ selfoss_username }}"
+    name: "Update feeds for {{ selfoss_username | default('selfoss service') }}"
     special_time: "{{ selfoss_special_time }}"
     job: "sleep $((RANDOM \\% 300)) && {{ selfoss_php_path }} {{ selfoss_install_dir }}/cliupdate.php"
     user: "{{ selfoss_www_user }}"
